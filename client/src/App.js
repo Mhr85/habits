@@ -16,13 +16,17 @@ const config = {
   client_id: process.env.REACT_APP_OKTA_CLIENT_ID,
 };
 
+// function onAuthRequired({ history }) {
+//   history.push('/login');
+// }
+
 function App() {
   return (
     <Router>
       <Security issuer={config.issuer}
                   client_id={config.client_id}
                   redirect_uri={config.redirect_uri}
-                  // onAuthRequired={onAuthRequired}
+                  //onAuthRequired={onAuthRequired}
         >
           <div>
         <Nav />
