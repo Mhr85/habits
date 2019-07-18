@@ -30,7 +30,7 @@ function Nav() {
             </Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link" to="/staff">
+            <Link className="nav-link" to="/habits">
               Habits
             </Link>
           </li>
