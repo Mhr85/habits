@@ -19,9 +19,9 @@ router.post('/:id', (req, res) => {
 
 router.get('/:id', (req, res) => {
 
-  Habit.find({ userId: req.params.id })
-    .then((res) => console.log(`All habits for ${req.params.id}:  ${res}`))
-    return(res)
+  const allHabits = Habit.find({ userId: req.params.id })
+    .then((allHabits) => console.log(`All habits for ${req.params.id}:  ${allHabits}`))
+    // .then(() => res.json(allHabits))
 })
 
 module.exports = router;

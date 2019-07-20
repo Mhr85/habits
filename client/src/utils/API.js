@@ -15,8 +15,8 @@ export default {
   findHabits: (id) => {
 
     axios.get(`http://localhost:3002/api/habits/${id}`, (req, res) => {
-      console.log(`API console log: ${res}`)
-      .then((res) => res)
+      console.log(`API.js response: ${res}`)
+      return res;
     })
   }
 };
