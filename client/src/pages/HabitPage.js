@@ -1,33 +1,56 @@
 import React, { Component } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Label, Form, FormGroup } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Label, FormGroup } from 'reactstrap';
 
+import API from '../utils/API';
 class Habits extends Component {
-  state = {
-    currentUserName: '',
-    currentUserEmail: ''
-  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      modal: false,
+      currentUserName: '',
+      currentUserEmail: '',
+      currentUserSub: '',
+      newHabitName: '',
+      newHabitDuration: '',
+      newHabitDescription: ''
+    };
+    this.toggle = this.toggle.bind(this);
+  }
 
   componentDidMount() {
     const idToken = JSON.parse(localStorage.getItem('okta-token-storage'));
     this.setState({
       currentUserEmail: idToken.idToken.claims.email,
-      currentUserName: idToken.idToken.claims.name
-    });
+      currentUserName: idToken.idToken.claims.name,
+      currentUserSub: idToken.idToken.claims.sub
+    }, () => {
+      console.log(`HabitPage state ${JSON.stringify(this.state)}`)
+      const allHabits = API.findHabits(this.state.currentUserSub)
+      console.log(allHabits)
+    })
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      modal: false
-    };
-
-    this.toggle = this.toggle.bind(this);
-  }
+  formChange = e => {
+		this.setState({
+			[e.target.name]: e.target.value
+		});
+	};
 
   toggle() {
     this.setState(prevState => ({
       modal: !prevState.modal
     }));
+  }
+
+  createHabit() {
+    const newHabit = {
+      name: this.state.newHabitName,
+      description: this.state.newHabitDescription,
+      duration: this.state.newHabitDuration
+    }
+    console.log(`New habit: ${newHabit} being sent to api...`)
+    API.saveHabit(newHabit, this.state.currentUserSub);
   }
 
 
@@ -56,19 +79,42 @@ class Habits extends Component {
 
           <FormGroup className={this.props.className}>{' '}
             <Label for="unmountOnClose">Habit</Label>
-            <Input type="textarea" id="habits-title" placeholder="Wake up everyday at 5 AM" rows={1} />
+            <Input 
+              type="text" 
+              id="habits-title" 
+              placeholder="Wake up everyday at 5 AM" 
+              name="newHabitName"
+              value={this.state.newHabitName}
+              onChange={this.formChange} 
+            />
             <Label for="unmountOnClose">Duration</Label>
-            <Input type="textarea" id="habits-duration" placeholder="66" rows={1} />
+            <Input 
+              type="text" 
+              id="habits-duration" 
+              placeholder="66" 
+              name="newHabitDuration"
+              value={this.state.newHabitDuration}
+              onChange={this.formChange}
+            />
             <Label for="unmountOnClose">Description</Label>
-            <Input type="textarea" id="habits-description" placeholder="Write something (data should remain in modal if unmountOnClose is set to false)" rows={5} />
+            <Input 
+              type="textarea" 
+              id="habits-description" 
+              placeholder="Write something (data should remain in modal if unmountOnClose is set to false)" 
+              rows={5}
+              name="newHabitDescription"
+              value={this.state.newHabitDescription}
+              onChange={this.formChange}
+            />
           </FormGroup>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={this.toggle}>Create Habit</Button>{' '}
+            <Button color="primary" onClick={this.createHabit.bind(this)}>Create Habit</Button>{' '}
             <Button color="secondary" onClick={this.toggle}>Cancel</Button>
           </ModalFooter>
         </Modal>
       </div>
+
       </>
     );
   }
