@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Label, FormGroup } from 'reactstrap';
+import axios from 'axios';
+
 
 import API from '../utils/API';
 class Habits extends Component {
@@ -25,9 +27,17 @@ class Habits extends Component {
       currentUserName: idToken.idToken.claims.name,
       currentUserSub: idToken.idToken.claims.sub
     }, () => {
-      console.log(`HabitPage state ${JSON.stringify(this.state)}`)
-      const allHabits = API.findHabits(this.state.currentUserSub)
-      console.log(allHabits)
+      axios.get(`http://localhost:3002/api/habits/${this.state.currentUserSub}`)
+        .then(
+          // (res) => console.log(`HabitPage response: ${JSON.stringify(res, null, 4)}`)
+          function(res){
+            console.log(`HabitPage response:`);
+            console.log(res);
+          }
+        )
+
+
+        // .then((res) => console.log(`HabitPage response: ${JSON.stringify(res, null, 4)}`))
     })
   }
 
