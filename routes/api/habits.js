@@ -20,8 +20,10 @@ router.post('/:id', (req, res) => {
 router.get('/:id', (req, res) => {
 
   const allHabits = Habit.find({ userId: req.params.id })
-    .then((allHabits) => console.log(`All habits for ${req.params.id}:  ${allHabits}`))
-    // .then(() => res.json(allHabits))
+    .then((allHabits) => {
+      console.log(`All habits for ${req.params.id}:  ${allHabits}`)
+      res.json(allHabits)
+    })
 })
 
 module.exports = router;
