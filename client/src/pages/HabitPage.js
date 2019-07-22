@@ -15,7 +15,8 @@ class Habits extends Component {
       currentUserSub: '',
       newHabitName: '',
       newHabitDuration: '',
-      newHabitDescription: ''
+      newHabitDescription: '',
+      userHabits: []
     };
     this.toggle = this.toggle.bind(this);
   }
@@ -29,16 +30,23 @@ class Habits extends Component {
     }, () => {
       axios.get(`http://localhost:3002/api/habits/${this.state.currentUserSub}`)
         .then(
+          (res) => this.displayUserHabits(res)
           // (res) => console.log(`HabitPage response: ${JSON.stringify(res, null, 4)}`)
-          function(res){
-            console.log(`HabitPage response:`);
-            console.log(res);
-          }
+          // function(res){
+          //   console.log(`HabitPage response: ${JSON.stringify(res)}`);
+          //   this.setState({ userHabits: res.data })
+          //   console.log(this.state.userHabits)
+          // }
         )
 
 
         // .then((res) => console.log(`HabitPage response: ${JSON.stringify(res, null, 4)}`))
     })
+  }
+
+  displayUserHabits(res) {
+    this.setState({ userHabits: res.data })
+    console.log(`After setState: ${JSON.stringify(this.state.userHabits)}`)
   }
 
   formChange = e => {
@@ -123,6 +131,16 @@ class Habits extends Component {
             <Button color="secondary" onClick={this.toggle}>Cancel</Button>
           </ModalFooter>
         </Modal>
+      </div>
+      <div>
+      {this.state.userHabits.map((habit) => (  
+      <>
+        <h2>{habit.name}</h2>
+        <p>{habit.description}</p>
+        <p><strong>Duration: </strong>{habit.duration}</p>
+        <p><strong>Progress: </strong>{habit.progress}%</p>
+      </>
+      ))}
       </div>
 
       </>
