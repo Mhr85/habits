@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Label, FormGroup } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Input, Label, FormGroup } from 'reactstrap';
+import { Button } from 'semantic-ui-react'
+import "../App.css"
+
 
 import API from '../utils/API';
 class Habits extends Component {
@@ -49,7 +52,7 @@ class Habits extends Component {
       description: this.state.newHabitDescription,
       duration: this.state.newHabitDuration
     }
-    console.log(`New habit: ${newHabit} being sent to api...`)
+    // console.log(`New habit: ${newHabit} being sent to api...`)
     API.saveHabit(newHabit, this.state.currentUserSub);
   }
 
@@ -60,14 +63,15 @@ class Habits extends Component {
 
     return (
       <>
-      <div>
+      <div className="jumbotron bg-dark" id="main-div">
+      <div className="text-center">
         <h1>Welcome {currentUserName}</h1>
-        <p>Email: {currentUserEmail}</p>
-        <p>Welcome to habit21, let build good habits.</p>
+        {/* <p>Email: {currentUserEmail}</p>
+        <p>Welcome to habit21, let build good habits.</p> */}
       </div>
 
-      <div>
-        <Button color="danger" onClick={this.toggle}>{this.props.buttonLabel}Add Habit</Button>
+      <div className="text-center">
+        <Button circular icon='plus' className="p-4 bg-danger mt-4" bg="danger" onClick={this.toggle}>{this.props.buttonLabel}</Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle} close={closeBtn}>Add Habits</ModalHeader>
           <ModalBody>
@@ -79,28 +83,28 @@ class Habits extends Component {
 
           <FormGroup className={this.props.className}>{' '}
             <Label for="unmountOnClose">Habit</Label>
-            <Input 
-              type="text" 
-              id="habits-title" 
-              placeholder="Wake up everyday at 5 AM" 
+            <Input
+              type="text"
+              id="habits-title"
+              placeholder="Wake up everyday at 5 AM"
               name="newHabitName"
               value={this.state.newHabitName}
-              onChange={this.formChange} 
+              onChange={this.formChange}
             />
             <Label for="unmountOnClose">Duration</Label>
-            <Input 
-              type="text" 
-              id="habits-duration" 
-              placeholder="66" 
+            <Input
+              type="text"
+              id="habits-duration"
+              placeholder="66"
               name="newHabitDuration"
               value={this.state.newHabitDuration}
               onChange={this.formChange}
             />
             <Label for="unmountOnClose">Description</Label>
-            <Input 
-              type="textarea" 
-              id="habits-description" 
-              placeholder="Write something (data should remain in modal if unmountOnClose is set to false)" 
+            <Input
+              type="textarea"
+              id="habits-description"
+              placeholder="Write something (data should remain in modal if unmountOnClose is set to false)"
               rows={5}
               name="newHabitDescription"
               value={this.state.newHabitDescription}
@@ -113,6 +117,7 @@ class Habits extends Component {
             <Button color="secondary" onClick={this.toggle}>Cancel</Button>
           </ModalFooter>
         </Modal>
+      </div>
       </div>
 
       </>

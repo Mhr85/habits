@@ -3,7 +3,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Security, SecureRoute, ImplicitCallback } from '@okta/okta-react';
 // import { Habits, ModalExample } from './pages/Habits';
-// import Css from "./App.css";
+import Css from "./App.css";
 import './App.scss';
 import Books from "./pages/Books";
 import Habits from "./pages/HabitPage";

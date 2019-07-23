@@ -18,7 +18,7 @@ router.post('/:id', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-
+  console.log(res);
   Habit.find({ userId: req.params.id })
     .then((res) => console.log(`All habits for ${req.params.id}:  ${res}`))
     return(res)
