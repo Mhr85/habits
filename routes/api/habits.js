@@ -1,3 +1,4 @@
+const db = require("../../models");
 const router = require("express").Router();
 const Habit = require('../../models/Habit')
 
@@ -18,10 +19,21 @@ router.post('/:id', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
+  console.log(req.params.id)
+  const allHabits = Habit.find({
+    userId: req.params.id
+  })
+    // .then((allHabits) => console.log(allHabits))
+    .then((allHabits) => res.json(allHabits))
+})
 
-  const allHabits = Habit.find({ userId: req.params.id })
-    .then((allHabits) => console.log(`All habits for ${req.params.id}:  ${allHabits}`))
-    // .then(() => res.json(allHabits))
+router.delete('/:id', (req, res) => {
+  console.log(req.params.id)
+    db.Habit
+      .findById({ _id: req.params.id })
+      .then(dbModel => dbModel.remove())
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
 })
 
 module.exports = router;

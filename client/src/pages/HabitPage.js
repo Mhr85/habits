@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Label, FormGroup } from 'reactstrap';
 import axios from 'axios';
-
-
+// import styles from './AddHabitForm.css';
+import {Animated} from "react-animated-css";
 import API from '../utils/API';
 class Habits extends Component {
 
@@ -60,6 +60,7 @@ class Habits extends Component {
       duration: this.state.newHabitDuration
     }
     console.log(`New habit: ${newHabit} being sent to api...`)
+    window.location.href="/habitslist"
     API.saveHabit(newHabit, this.state.currentUserSub);
   }
 
@@ -89,28 +90,28 @@ class Habits extends Component {
 
           <FormGroup className={this.props.className}>{' '}
             <Label for="unmountOnClose">Habit</Label>
-            <Input 
-              type="text" 
-              id="habits-title" 
-              placeholder="Wake up everyday at 5 AM" 
+            <Input
+              type="text"
+              id="habits-title"
+              placeholder="Wake up everyday at 5 AM"
               name="newHabitName"
               value={this.state.newHabitName}
-              onChange={this.formChange} 
+              onChange={this.formChange}
             />
-            <Label for="unmountOnClose">Duration</Label>
-            <Input 
-              type="text" 
-              id="habits-duration" 
-              placeholder="66" 
+            <Label for="unmountOnClose">How many days you want to work on your habit?n</Label>
+            <Input
+              type="text"
+              id="habits-duration"
+              placeholder="66"
               name="newHabitDuration"
               value={this.state.newHabitDuration}
               onChange={this.formChange}
             />
             <Label for="unmountOnClose">Description</Label>
-            <Input 
-              type="textarea" 
-              id="habits-description" 
-              placeholder="Write something (data should remain in modal if unmountOnClose is set to false)" 
+            <Input
+              type="textarea"
+              id="habits-description"
+              placeholder="Write something (data should remain in modal if unmountOnClose is set to false)"
               rows={5}
               name="newHabitDescription"
               value={this.state.newHabitDescription}
