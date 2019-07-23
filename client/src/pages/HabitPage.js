@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Input, Label, FormGroup } from 'reactstrap';
 import { Button } from 'semantic-ui-react'
 import "../App.css"
+import axios from 'axios';
+
 
 
 import API from '../utils/API';
@@ -16,7 +18,8 @@ class Habits extends Component {
       currentUserSub: '',
       newHabitName: '',
       newHabitDuration: '',
-      newHabitDescription: ''
+      newHabitDescription: '',
+      userHabits: []
     };
     this.toggle = this.toggle.bind(this);
   }
@@ -28,10 +31,25 @@ class Habits extends Component {
       currentUserName: idToken.idToken.claims.name,
       currentUserSub: idToken.idToken.claims.sub
     }, () => {
-      console.log(`HabitPage state ${JSON.stringify(this.state)}`)
-      const allHabits = API.findHabits(this.state.currentUserSub)
-      console.log(allHabits)
+      axios.get(`http://localhost:3002/api/habits/${this.state.currentUserSub}`)
+        .then(
+          (res) => this.displayUserHabits(res)
+          // (res) => console.log(`HabitPage response: ${JSON.stringify(res, null, 4)}`)
+          // function(res){
+          //   console.log(`HabitPage response: ${JSON.stringify(res)}`);
+          //   this.setState({ userHabits: res.data })
+          //   console.log(this.state.userHabits)
+          // }
+        )
+
+
+        // .then((res) => console.log(`HabitPage response: ${JSON.stringify(res, null, 4)}`))
     })
+  }
+
+  displayUserHabits(res) {
+    this.setState({ userHabits: res.data })
+    console.log(`After setState: ${JSON.stringify(this.state.userHabits)}`)
   }
 
   formChange = e => {
@@ -118,56 +136,23 @@ class Habits extends Component {
           </ModalFooter>
         </Modal>
       </div>
-      </div>
 
+      <div>
+        {this.state.userHabits.map((habit) => (
+        <>
+        <h2>{habit.name}</h2>
+        <p>{habit.description}</p>
+        <p><strong>Duration: </strong>{habit.duration}</p>
+        <p><strong>Progress: </strong>{habit.progress}%</p>
+        </>
+        ))}
+
+      </div>
+    </div>
       </>
     );
   }
 }
 
-// class ModalExample extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       modal: false
-//     };
 
-//     this.toggle = this.toggle.bind(this);
-//   }
-
-//   toggle() {
-//     this.setState(prevState => ({
-//       modal: !prevState.modal
-//     }));
-//   }
-
-//   render() {
-//       const closeBtn = <button className="close" onClick={this.toggle}>&times;</button>;
-
-//       return (
-//       <div>
-//         <Button color="danger" onClick={this.toggle}>{this.props.buttonLabel}Add Habit</Button>
-//         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-//           <ModalHeader toggle={this.toggle} close={closeBtn}>Modal title</ModalHeader>
-//           <ModalBody>
-//             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-//             dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-//             ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-//             fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-//             mollit anim id est laborum.
-//           </ModalBody>
-//           <ModalFooter>
-//             <Button color="primary" onClick={this.toggle}>Do Something</Button>{' '}
-//             <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-//           </ModalFooter>
-//         </Modal>
-//       </div>
-//     );
-//   }
-// }
-
-// export {
-//   Habits,
-//   ModalExample,
-// }
 export default Habits;
