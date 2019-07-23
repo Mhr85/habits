@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Label, Form, FormGroup } from 'reactstrap';
+import Quote from 'inspirational-quotes';
+import ReactCalendar from '../components/Calendar';
 
 class Habits extends Component {
   state = {
@@ -35,8 +37,11 @@ class Habits extends Component {
     const { currentUserEmail, currentUserName } = this.state;
     const closeBtn = <button className="close" onClick={this.toggle}>&times;</button>;
 
+    alert(Quote.getRandomQuote());
+
     return (
       <>
+      <ReactCalendar />
       <div>
         <h1>Welcome {currentUserName}</h1>
         <p>Email: {currentUserEmail}</p>
