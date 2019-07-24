@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { withAuth } from '@okta/okta-react';
+import { Button } from 'semantic-ui-react'
+import "../App.css"
 
 export default withAuth(
   class Home extends Component {
@@ -35,26 +37,26 @@ export default withAuth(
       const mainContent = this.state.authenticated ? (
         <div>
           <p className="lead">
-            You have entered the staff portal,{' '}
-            <Link to="/staff">click here</Link>
+            You have entered the Habits portal,{' '}
+            <Link to="/Habits">click here</Link>
           </p>
-          <button className="btn btn-light btn-lg" onClick={this.logout}>
+          <Button circular className="btn btn-light btn-lg" onClick={this.logout}>
             Logout
-          </button>
+          </Button>
         </div>
       ) : (
         <div>
           <p className="lead">
-            Send us an email for signup
+            Welcome to Habits
           </p>
-          <button className="btn btn-dark btn-lg" onClick={this.login}>
+          <Button circular  className="btn btn-light btn-lg" onClick={this.login}>
             Login
-          </button>
+          </Button>
         </div>
       );
 
       return (
-        <div className="jumbotron">
+        <div className="jumbotron text-center bg-dark" id="main-div">
           <h1 className="display-4">Habits Portal</h1>
           {mainContent}
         </div>

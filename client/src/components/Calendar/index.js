@@ -16,6 +16,7 @@ class ReactCalendar extends Component {
           onChange={this.onChange}
           onClickDay={this.onClickDay}
           date={this.state.date}
+          
         />
 
     );
