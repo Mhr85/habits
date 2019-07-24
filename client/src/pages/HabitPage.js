@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Label, FormGroup } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Input, Label, FormGroup } from 'reactstrap';
+import { Button } from 'semantic-ui-react'
+import "../App.css"
 import axios from 'axios';
+
 // import styles from './AddHabitForm.css';
 import {Animated} from "react-animated-css";
+
 import API from '../utils/API';
 class Habits extends Component {
 
@@ -15,7 +19,8 @@ class Habits extends Component {
       currentUserSub: '',
       newHabitName: '',
       newHabitDuration: '',
-      newHabitDescription: ''
+      newHabitDescription: '',
+      userHabits: []
     };
     this.toggle = this.toggle.bind(this);
   }
@@ -29,16 +34,23 @@ class Habits extends Component {
     }, () => {
       axios.get(`http://localhost:3002/api/habits/${this.state.currentUserSub}`)
         .then(
+          (res) => this.displayUserHabits(res)
           // (res) => console.log(`HabitPage response: ${JSON.stringify(res, null, 4)}`)
-          function(res){
-            console.log(`HabitPage response:`);
-            console.log(res);
-          }
+          // function(res){
+          //   console.log(`HabitPage response: ${JSON.stringify(res)}`);
+          //   this.setState({ userHabits: res.data })
+          //   console.log(this.state.userHabits)
+          // }
         )
 
 
         // .then((res) => console.log(`HabitPage response: ${JSON.stringify(res, null, 4)}`))
     })
+  }
+
+  displayUserHabits(res) {
+    this.setState({ userHabits: res.data })
+    console.log(`After setState: ${JSON.stringify(this.state.userHabits)}`)
   }
 
   formChange = e => {
@@ -59,8 +71,12 @@ class Habits extends Component {
       description: this.state.newHabitDescription,
       duration: this.state.newHabitDuration
     }
+
     console.log(`New habit: ${newHabit} being sent to api...`)
     window.location.href="/habitslist"
+
+    // console.log(`New habit: ${newHabit} being sent to api...`)
+
     API.saveHabit(newHabit, this.state.currentUserSub);
   }
 
@@ -71,14 +87,15 @@ class Habits extends Component {
 
     return (
       <>
-      <div>
+      <div className="jumbotron bg-dark" id="main-div">
+      <div className="text-center">
         <h1>Welcome {currentUserName}</h1>
-        <p>Email: {currentUserEmail}</p>
-        <p>Welcome to habit21, let build good habits.</p>
+        {/* <p>Email: {currentUserEmail}</p>
+        <p>Welcome to habit21, let build good habits.</p> */}
       </div>
 
-      <div>
-        <Button color="danger" onClick={this.toggle}>{this.props.buttonLabel}Add Habit</Button>
+      <div className="text-center">
+        <Button circular icon='plus' className="p-4 bg-danger mt-4" bg="danger" onClick={this.toggle}>{this.props.buttonLabel}</Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
           <ModalHeader toggle={this.toggle} close={closeBtn}>Add Habits</ModalHeader>
           <ModalBody>
@@ -98,7 +115,10 @@ class Habits extends Component {
               value={this.state.newHabitName}
               onChange={this.formChange}
             />
+
             <Label for="unmountOnClose">How many days you want to work on your habit?n</Label>
+            <Label for="unmountOnClose">Duration</Label>
+
             <Input
               type="text"
               id="habits-duration"
@@ -126,54 +146,22 @@ class Habits extends Component {
         </Modal>
       </div>
 
+      <div>
+        {this.state.userHabits.map((habit) => (
+        <>
+        <h2>{habit.name}</h2>
+        <p>{habit.description}</p>
+        <p><strong>Duration: </strong>{habit.duration}</p>
+        <p><strong>Progress: </strong>{habit.progress}%</p>
+        </>
+        ))}
+
+      </div>
+    </div>
       </>
     );
   }
 }
 
-// class ModalExample extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       modal: false
-//     };
 
-//     this.toggle = this.toggle.bind(this);
-//   }
-
-//   toggle() {
-//     this.setState(prevState => ({
-//       modal: !prevState.modal
-//     }));
-//   }
-
-//   render() {
-//       const closeBtn = <button className="close" onClick={this.toggle}>&times;</button>;
-
-//       return (
-//       <div>
-//         <Button color="danger" onClick={this.toggle}>{this.props.buttonLabel}Add Habit</Button>
-//         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-//           <ModalHeader toggle={this.toggle} close={closeBtn}>Modal title</ModalHeader>
-//           <ModalBody>
-//             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-//             dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-//             ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-//             fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-//             mollit anim id est laborum.
-//           </ModalBody>
-//           <ModalFooter>
-//             <Button color="primary" onClick={this.toggle}>Do Something</Button>{' '}
-//             <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-//           </ModalFooter>
-//         </Modal>
-//       </div>
-//     );
-//   }
-// }
-
-// export {
-//   Habits,
-//   ModalExample,
-// }
 export default Habits;

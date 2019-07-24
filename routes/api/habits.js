@@ -19,6 +19,7 @@ router.post('/:id', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
+
   console.log(req.params.id)
   const allHabits = Habit.find({
     userId: req.params.id
@@ -34,6 +35,20 @@ router.delete('/:id', (req, res) => {
       .then(dbModel => dbModel.remove())
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
+
+
+  console.log(res);
+  Habit.find({ userId: req.params.id })
+    .then((res) => console.log(`All habits for ${req.params.id}:  ${res}`))
+    return(res)
+
+
+  const allHabits = Habit.find({ userId: req.params.id })
+    .then((allHabits) => {
+      console.log(`All habits for ${req.params.id}:  ${allHabits}`)
+      res.json(allHabits)
+    })
+
 })
 
 module.exports = router;
