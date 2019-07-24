@@ -4,7 +4,8 @@ import { Button } from 'semantic-ui-react'
 import "../App.css"
 import axios from 'axios';
 
-
+// import styles from './AddHabitForm.css';
+import {Animated} from "react-animated-css";
 
 import API from '../utils/API';
 class Habits extends Component {
@@ -70,7 +71,12 @@ class Habits extends Component {
       description: this.state.newHabitDescription,
       duration: this.state.newHabitDuration
     }
+
+    console.log(`New habit: ${newHabit} being sent to api...`)
+    window.location.href="/habitslist"
+
     // console.log(`New habit: ${newHabit} being sent to api...`)
+
     API.saveHabit(newHabit, this.state.currentUserSub);
   }
 
@@ -109,7 +115,10 @@ class Habits extends Component {
               value={this.state.newHabitName}
               onChange={this.formChange}
             />
+
+            <Label for="unmountOnClose">How many days you want to work on your habit?n</Label>
             <Label for="unmountOnClose">Duration</Label>
+
             <Input
               type="text"
               id="habits-duration"

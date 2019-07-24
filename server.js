@@ -5,9 +5,9 @@ const routes = require("./routes");
 const app = express();
 var cors = require('cors');
 
-const db = 'mongodb+srv://rj123:rj123@habit66-laxik.mongodb.net/test?retryWrites=true&w=majority'
+// const db = 'mongodb+srv://rj123:rj123@habit66-laxik.mongodb.net/test?retryWrites=true&w=majority'
 const PORT = process.env.PORT || 3002;
-
+const db = process.env.MONGODB_URI || "mongodb://localhost/habitlist";
 
 // Define middleware here
 app.use(cors());
