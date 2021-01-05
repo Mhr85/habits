@@ -30,7 +30,7 @@
     "@okta/okta-react": "^1.2.0",
     "@okta/okta-signin-widget": "^3.0.1",
     "animate.css": "^3.7.2",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "babel-eslint": "^9.0.0",
     "babel-jest": "23.6.0",
     "bootstrap": "^4.3.1",
